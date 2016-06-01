@@ -45,5 +45,40 @@ class ItemHireApp(App):
 
     
 
-            
+    def add_Item(self, added_name, added_desc, added_number):
+        f = open("Items.csv", 'a')
+        new = added_name+","+added_desc+","+str(added_number)+","+"in\n"
+        f.write(new)
+        f.close()
+
+
+    def return_item(self):
+        for name in self.dicAvailablity:
+            if self.dicAvailablity[name] == "*":
+
+                temp_button = Button(text=name)
+                temp_button.bind(on_release=self.press_entry_return)
+                self.root.ids.entriesBox.add_widget(temp_button)
+
+    def press_entry_return(self, instance):
+        name= instance.text
+        instance.background_color = (1, 1, 0, 1)
+        self.dicAvailablity[name] = ""
+        self.file_updater()
+
+
+
+    def hire_item(self):
+        for name in self.dicAvailablity:
+            if self.dicAvailablity[name] == "":
+
+                temp_button = Button(text=name)
+                temp_button.bind(on_release=self.press_entry_hire)
+                self.root.ids.entriesBox.add_widget(temp_button)
+
+    def press_entry_hire(self, instance):
+        name= instance.text
+        instance.background_color = (1, 1, 0, 1)
+        self.dicAvailablity[name] = ""
+        self.file_updater()        
         
