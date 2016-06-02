@@ -1,4 +1,4 @@
-
+                                                                                                    
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.button import Button
@@ -22,6 +22,14 @@ class ItemHireApp(App):
         self.create_entry_bottons()
         return self.root
 
+       
+
+    def add_Item(self, added_name, added_desc, added_number):
+        f = open("Items.csv", 'w')
+        new = added_name+","+added_desc+","+str(added_number)+","+"in\n"
+        f.write(new)
+        f.close()
+
     def file_reader(self):
         f= open("items.csv",'r')
         movie= f.readlines()
@@ -43,13 +51,6 @@ class ItemHireApp(App):
             else:
                 self.dicAvailablity[self.movieName] = ""
 
-    
-
-    def add_Item(self, added_name, added_desc, added_number):
-        f = open("Items.csv", 'w')
-        new = added_name+","+added_desc+","+str(added_number)+","+"in\n"
-        f.write(new)
-        f.close()
 
 
     def return_item(self):
@@ -79,27 +80,32 @@ class ItemHireApp(App):
     def press_entry_hire(self, instance):
         name= instance.text
         instance.background_color = (1, 1, 0, 1)
-        self.dicAvailablity[name] = ""
+        self.dicAvailablity[name] = "*"
         self.file_updater()        
     
             
+            
+
+    def press_entry(self, instance):
+        name = instance.text
+        self.status_text = "Movie: "+ name + "\nDescription: " + self.dicDescription[name] + "\nCost:" + str(self.dicCost[name])
+
+
     def create_entry_bottons(self):
         
         for name in self.dicDescription:
 
             temp_button = Button(text=name)
             temp_button.bind(on_release=self.press_entry)
-            self.root.ids.entriesBox.add_widget(temp_button)        
+            self.root.ids.entriesBox.add_widget(temp_button)
 
-    def press_entry(self, instance):
-        name = instance.text
-        self.status_text = "Movie: "+ name + "\nDescription: " + self.dicDescription[name] + "\nCost:" + str(self.dicCost[name])
-
+            
     def press_add(self):
 
         self.status_text = "Enter details for new items"
 
         self.root.ids.popup.open()
+        
 
     def press_save(self, added_name, added_desc, added_number):
 
@@ -116,7 +122,7 @@ class ItemHireApp(App):
         self.root.ids.popup.dismiss()
         self.add_Item(added_name, added_desc, added_number)
         self.clear_fields()    
-    ()
+    
 
     def file_updater(self):
         f = open('Items.csv','w')
